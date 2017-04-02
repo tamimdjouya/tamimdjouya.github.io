@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    
+
+    <!-- Bootstrap -->
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+
+    <!--<script src="js/bootstrap.min.js"></script>-->
+
+  
+	  <script src="scripts/app.js"></script> 
+    
+
+  </head>
+  <body ng-app="myApp" ng-controller="wedstrijdController">
+    <div class="<container></container>">
+       <hr>
+       <button type="button" class="btn btn-info btn-sm pull-right" data-toggle="modal" data-target="#gameModal">Add Game</button> 
+    <h3><p class="text-left" align="left">Match</p></h3>
+    <span class="clearfix"></span>
+    </hr>
+
+    <div class="alert alert-info" ng-if="message">
+         <a href="#" class="close" ng-click="clearMessage()">&times;</a>
+        {{message}}
+    </div>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th class="text-center col-sd-2">Game</th>
+        <th class="text-center">Home</th>
+        <th class="text-center">Out</th>
+        <th class="text-center">Date</th>
+        <th class="text-center">Edit</th>
+        <th class="text-center">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="match in matches track by $index">
+        <td class="col-md-2">{{$index+1}}</td>
+        <td class="col-sd-2">{{match.home}}</td>
+        <td class="col-sd-2">{{match.out}}</td> 
+        
+        <td class="col-sd-2">{{match.date | date:'dd-MM-yyyy'}}</td> 
+        <td>
+            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModalEdit" ng-click="selectMatch(match)">Edit</button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModalDelete" ng-click="selectMatch(match)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+    </div>
+
+      
+  <!-- Modal add player -->
+  <div class="modal fade" id="gameModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add new match</h4>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Team 1(Home)</label>
+                    <div class="col-sm-10">
+                    
+                    <div ng-controller="teamsController">
+                      <select name="" id="teamHome" ng-model="selected_person" ng-model="MyData" ng-options="team.teamname for team in teams" ng-change="onChange()">
+                          <option value="1">choose team 1(HOME)</option>
+                      </select>  
+                    </div>  
+
+                   
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Team 2(Out)</label>
+                    <div class="col-sm-10">
+                        <div ng-controller="teamsController">
+                             <select name="" id="teamOut" ng-model="selected_person" ng-options="team.teamname for team in teams">
+                                <option value="1">choose team 2(OUT)</option>
+                             </select>  
+                        </div>  
+                    </div>
+                </div>
+                
+                <label class="control-label col-sm-2">Datum wedstrijd</label>
+                    
+                 <input type="date" ng-model="matchDate" id="cal"/>
+                 
+                 
+  
+
+                  
+                
+
+
+
+               
+                
+                <div class="form-group"> 
+                    <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default" ng-click="saveMatch()" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+    <!-- Modal edit player -->
+  <div class="modal fade" id="myModalEdit" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Edit this player</h4>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Team 1(Home)</label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control" ng-model="clickedMatch.home" placeholder="Enter homeTEAM">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Team 2(Out)</label>
+                    <div class="col-sm-10">
+                    <input type="text" class="form-control" ng-model="clickedMatch.out" placeholder="Enter outTEAM">
+                    </div>
+                </div>
+                
+                
+                <div class="form-group"> 
+                    <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default" ng-click="updateMatch()" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Modal delete player -->
+  <div class="modal fade" id="myModalDelete" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"></h4>Are you Sure?</h4>
+        </div>
+        <div class="modal-body">
+            <strong style="color: red">
+                You are going to delete {{clickedMatch.home}}. All information will be deleted!
+            </strong>
+           
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="deleteMatch()">Yes</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+
+    
+  </body>
+
+
+
